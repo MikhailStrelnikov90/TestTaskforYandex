@@ -59,12 +59,15 @@ def delivery_cost_with_dimensions(dimensions, cost_with_distance):
     return cost_delivery
 
 
-def input_fragility():
+def input_fragility(distance):
     while True:
         print("Введите значение, если груз хрупкий (допустимое значения 'хрупкий', если груз нехрупкий, то оставьте поле пустым): ", end='')
         fragility = input()
         if fragility not in ["хрупкий", ""]:
             print("Введено некорректное значение хрупкости груза(допустимое значения 'хрупкий', если груз нехрупкий, то оставьте поле пустым)")
+            continue
+        elif fragility == "хрупкий" and distance > 30:
+            print("Хрупкие грузы нельзя возить на расстояние более 30 км")
             continue
         else:
             return fragility
@@ -74,8 +77,6 @@ def delivery_cost_with_fragility(fragility, distance, cost_with_distance_and_dim
     cost_delivery = cost_with_distance_and_dimensions
     if fragility == "хрупкий" and distance <= 30:
         cost_delivery += 300
-    elif fragility == "хрупкий" and distance > 30:
-        print("Хрупкие грузы нельзя возить на расстояние более 30 км")
     return cost_delivery
 
 
@@ -146,7 +147,7 @@ def main():
     cost_delivery_with_distance = delivery_cost_with_distance(distance_value)
     dimensions_value = input_dimensions()
     cost_delivery_with_distance_and_demensions = delivery_cost_with_dimensions(dimensions=dimensions_value, cost_with_distance=cost_delivery_with_distance)
-    fragility_value = input_fragility()
+    fragility_value = input_fragility(distance_value)
     cost_delivery_with_distance_demensions_and_fragility = delivery_cost_with_fragility(fragility=fragility_value, distance=distance_value, cost_with_distance_and_dimensions=cost_delivery_with_distance_and_demensions)
     workload_value = input_workload()
     cost_delivery_with_all_parameters = delivery_cost_with_workload(workload=workload_value, cost_with_distance_demensions_and_fragility=cost_delivery_with_distance_demensions_and_fragility)
